@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "hampy"
+version = "0.1.0"
+description = ""
+authors = ["Nathaniel M. Capule <llss.s.sls.lll@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+textual = "^0.13.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^2.16.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
