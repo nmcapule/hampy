@@ -1,4 +1,7 @@
 {
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
   "python.defaultInterpreterPath": ".venv/bin/python",
   "python.linting.enabled": true,
   "python.linting.pylintPath": ".venv/bin/pylint"

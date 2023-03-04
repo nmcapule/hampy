@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-textual = "^0.13.0"
+rich = "^13.3.1"
 
 
 [tool.poetry.group.dev.dependencies]
