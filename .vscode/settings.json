@@ -4,5 +4,11 @@
   },
   "python.defaultInterpreterPath": ".venv/bin/python",
   "python.linting.enabled": true,
-  "python.linting.pylintPath": ".venv/bin/pylint"
+  "python.linting.pylintPath": ".venv/bin/pylint",
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.indexing": true,
+  "python.analysis.packageIndexDepths": [
+    ["textual", 3],
+    ["rich", 3]
+  ]
 }
