@@ -1,5 +1,4 @@
 import dataclasses
-from rich.console import Console, ConsoleOptions, RenderResult
 from textual import events
 from textual.geometry import Size
 from textual.reactive import reactive
@@ -13,32 +12,38 @@ class Coord:
 
 
 class GameRenderable:
-    size = None
+    _size = None
     buffer: list[list[str]] = []
 
     def __init__(self, size=None):
-        self.size = size
+        self._size = size
 
-    def __rich_console__(
-        self, _console: Console, options: ConsoleOptions
-    ) -> RenderResult:
+    @property
+    def size(self):
+        return self._size
+
+    @size.setter
+    def size(self, val: Size):
         if (
-            self.size.width != options.max_width
-            or self.size.height != options.max_height
+            not self._size
+            or self._size.width != val.width
+            or self._size.height != val.height
         ):
-            self.size = Size(width=options.max_width, height=options.max_height)
+            self._size = Size(width=val.width, height=val.height)
             self.buffer = [
-                ["_" for col in range(self.size.width)]
-                for row in range(self.size.height)
+                [" " for col in range(self._size.width)]
+                for row in range(self._size.height)
             ]
-        yield "".join(["".join(col) for col in self.buffer])
 
-    def draw(self, coord: Coord, s: str):
-        if coord.col >= self.size.width:
+    def render(self):
+        return "\n".join(["".join(col) for col in self.buffer])
+
+    def draw(self, coord: Coord, val: str):
+        if coord.col >= self._size.width:
             pass
-        if coord.row >= self.size.height:
+        if coord.row >= self._size.height:
             pass
-        self.buffer[coord.row][coord.col] = s
+        self.buffer[coord.row][coord.col] = val
 
 
 class GameView(Static):
@@ -55,19 +60,19 @@ class GameView(Static):
 
     def watch_tick(self):
         self.game.size = self.size
-        self.update(self.game)
+        self.update(self.game.render())
 
-    def handle_event(self, event: events.Event):
-        if isinstance(event, events.Key):
-            self.game.draw(self._character, "-")
-            match event.key:
-                case "left":
-                    self._character.col -= 1
-                case "right":
-                    self._character.col += 1
-                case "up":
-                    self._character.row -= 1
-                case "down":
-                    self._character.row += 1
-            self.game.draw(self._character, "X")
-        return event
+    # def handle_event(self, event: events.Event):
+    #     if isinstance(event, events.Key):
+    #         self.game.draw(self._character, "-")
+    #         match event.key:
+    #             case "left":
+    #                 self._character.col -= 1
+    #             case "right":
+    #                 self._character.col += 1
+    #             case "up":
+    #                 self._character.row -= 1
+    #             case "down":
+    #                 self._character.row += 1
+    #         self.game.draw(self._character, "[blue]X[/]")
+    #     return event
